@@ -2,40 +2,38 @@
 //select div canva and create a selector arrary 
 const canvas = d3.select(".canva");
 
-//insert svg element in div canva
+//set up svg size
 const svg = canvas.append("svg")
-                  .attr('width', 300)
-                  .attr('height', 3000);
+                  .attr('width', 600)
+                  .attr('height', 600);
 
-//insert element circlr                
-svg.append("circle")
-   .attr('cx', 50)
-   .attr('cy', 50)
-   .attr('r', 50)
-   .attr('fill', "brown");
+//specify svg elements                   
+const rect = svg.selectAll('rect');
+const text = svg.selectAll('text');
 
-//insert element rectangle
-svg.append("rect")
-   .attr('width', 50)
-   .attr('height', 100)
-   .attr('x', 10)
-   .attr('y', 10)
-   .attr('rx', 10)
-   .attr('ry', 10)
-   .attr('fill', "blue");
+//live server: load json
+d3.json("test.json").then(data =>{
+   console.log(data);
 
-//insert element line
-svg.append("line")
-   .attr('x1', 100)
-   .attr('x2', 10)
-   .attr('y1', 100)
-   .attr('y2', 10)
-   .attr('stroke', "black");
+   //add rect
+   rect.data(data)
+         .enter().append('rect')
+         .attr('fill', (d, i) => d.fill )
+         .attr('width', 60)
+         .attr('height', (d, i) => d.height*2 )
+         .attr('x', (d, i) => i*61 )
+         .attr('y', (d, i) => (220-(d.height*2)) );
 
-//insert element text 
-svg.append("text")
-   .text("Hello There!")
-   .attr('font-size', 12)
-   .attr('fill', "grey")
-   .attr('x', 50)
-   .attr('y', 50);
+   //add text
+   text.data(data)
+            .enter().append('text')
+            .text( (d, i)=> d.height*2 )
+            .attr('x', (d, i) => i*61+61/2 )
+            .attr('y', (d, i) => (220-(d.height*2))-2 )
+            .attr('text-anchor', 'middle')
+            .attr('font-family', 'monospace')
+            .attr('font-size', 15)
+            .attr('font-weight', 'bold')
+            .attr('fill', (d, i) => d.fill )
+            
+});
