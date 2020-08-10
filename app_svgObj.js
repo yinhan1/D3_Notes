@@ -26,6 +26,7 @@ d3.json("test.json").then(data =>{
 
    //add text
    text.data(data)
+            //enter selection to auto-insert text elements
             .enter().append('text')
             .text( (d, i)=> d.height*2 )
             .attr('x', (d, i) => i*61+61/2 )
